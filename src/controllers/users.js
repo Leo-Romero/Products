@@ -1,34 +1,38 @@
 //const express = require('express')
+const User = require('../models/user')
 
 /*
 *
 * @param {express.Request} req
 * @param {express.Response} res
 */
-const getAllUsers = (req, res) => {
+const getAllUsers = async (req, res, next) => {
+  try {
+    const users = await User.find()
+    res.json(users)
+  } catch (error) {
+    next(error)
+  }
+}
 
-  /* throw new Error('Error de testeo') */
-  const users = [
-    {
-      id: 1,
-      name: 'Juan'
-    },
-    {
-      id: 2,
-      name: 'Pedro'
-    },
-    {
-      id: 3,
-      name: 'Jose'
+/*
+*
+* @param {express.Request} req
+* @param {express.Response} res
+*/
+const createUser = async (req, res, next) => {
+  try {
+    let user = req.body
+    user = await User.create(user)
+  
+    const result = {
+      message: 'Usuario creado',
+      user
     }
-  ]
-    
-  // Ejemplo de error sencillo lo ideal seria instanciar una nueva clase de error
-  /* let error = new Error('Ha ocurrido un error inesperado...')
-    error.code = 504
-    throw error */
-
-  res.json(users)
+    res.status(201).json(result)
+  } catch (error) {
+    next(error)
+  }
 }
 
 /*
@@ -36,33 +40,22 @@ const getAllUsers = (req, res) => {
 * @param {express.Request} req
 * @param {express.Response} res
 */
-const createUser = (req, res) => {
-  const user = req.body
-  user.id = 123
-
-  const result = {
-    message: 'Usuario creado',
-    user
+const updateUser = async (req, res, next) => {
+  try {
+    const { id } = req.params
+    let user = req.body
+    user._id = id
+  
+    await User.updateOne(user)
+  
+    const result = {
+      message: 'Usuario modificado',
+      user
+    }
+    res.json(result)
+  } catch (error) {
+    next(error)
   }
-  res.status(201).json(result)
-}
-
-/*
-*
-* @param {express.Request} req
-* @param {express.Response} res
-*/
-const updateUser = (req, res) => {
-  const {id} = req.params
-  const user = req.body
-    
-  user.id = id
-
-  const result = {
-    message: 'Usuario modificado',
-    user
-  }
-  res.json(result)
 }
 
 /*
@@ -82,11 +75,19 @@ const updatePartialUser = (req, res) => {
 * @param {express.Request} req
 * @param {express.Response} res
 */
-const deleteUser = (req, res) => {
-  const result = {
-    message: 'Usuario eliminado'
+const deleteUser = async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const user = await User.findById(id)
+    user.remove()
+  
+    const result = {
+      message: 'Usuario eliminado'
+    }
+    res.json(result)  
+  } catch (error) {
+    next(error)
   }
-  res.json(result)
 }
 
 module.exports = {
