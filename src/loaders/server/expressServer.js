@@ -10,6 +10,7 @@ class ExpressServer {
   constructor() {
     this.app = express()
     this.port = config.port
+    this.basePathAuth = `${config.api.prefix}/auth`
     this.basePathUsers = `${config.api.prefix}/users`
 
     this._middlewares()
@@ -34,6 +35,7 @@ class ExpressServer {
       res.status(200).end()
     })
 
+    this.app.use(this.basePathAuth, require('../../routes/auth'))
     this.app.use(this.basePathUsers, require('../../routes/users'))
   }
 
@@ -46,7 +48,7 @@ class ExpressServer {
   }
 
   _errorHandler() {
-    this.app.use((err, req, res) => {
+    this.app.use((err, req, res, next) => {
       const code = err.code || 500    // Si NO viene code code = 500
             
       logger.error(`${code} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`)
@@ -55,7 +57,8 @@ class ExpressServer {
       const body = {
         error: {
           code,
-          message: err.message
+          message: err.message,
+          detail: err.data
         }
       }
       res.json(body)
@@ -71,7 +74,7 @@ class ExpressServer {
   }
 
   async start() {
-    this.app.listen(this.port, (error)=>{
+    this.app.listen(this.port, (error) => {
       if(error) {
         logger.error(error)
         process.exit(1)

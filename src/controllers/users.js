@@ -1,4 +1,3 @@
-//const express = require('express')
 const userService = require('../services/userService')
 const Success = require('../handlers/successHandler')
 
@@ -15,6 +14,7 @@ const getAllUsers = async (req, res, next) => {
     next(error)
   }
 }
+
 
 /*
 *
