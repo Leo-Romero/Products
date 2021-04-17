@@ -4,10 +4,21 @@ Productos con Nodejs y MongoDB
 
 del curso de Fernando Valdes
 
+
+v 0.0.5
+
+Corrección en Swagger
+
+Autorización con JWT
+
 v 0.0.4
+
 Se agrega Json Web Token
 
+Autenticación con JWT
+
 v 0.0.3
+
 Implementación de valdaciones con express-validator
 
 v 0.0.2

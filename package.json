@@ -1,6 +1,6 @@
 {
   "name": "products",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Productos con Nodejs y MongoDB",
   "main": "index.js",
   "scripts": {
