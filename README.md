@@ -4,6 +4,17 @@ Productos con Nodejs y MongoDB
 
 del curso de Fernando Valdes
 
+v 0.0.6
+
+Agrego librerias de test automáticos y reportes: newman, newman-reporter
+Formateador: prettier, lint-staged
+Husky para correr en el commit
+
+para ver los reportes:
+
+```
+http://localhost:3000/tests-report
+```
 
 v 0.0.5
 
